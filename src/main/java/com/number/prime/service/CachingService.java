@@ -46,7 +46,7 @@ public class CachingService {
                 .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
     }
 
-    @Scheduled(fixedRate = 6000)
+    @Scheduled(fixedRate = 3000)
     public void evictAllcachesAtIntervals() {
         evictAllCaches();
     }
