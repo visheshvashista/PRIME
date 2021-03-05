@@ -1,4 +1,5 @@
 ### Reference Documentation
+This API generates prime numbers up till the input number.
 
 Requirements:
 java 1.8 
