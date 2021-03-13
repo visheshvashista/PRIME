@@ -14,9 +14,7 @@ public class PrimeNumber {
 
 	@Override
 	public boolean equals(Object obj) {
-		System.out.println("bbb");
 		if (!(obj instanceof PrimeNumber)) {
-			System.out.println("ccc");
 			return false;
 		}
 		if (obj == this)
