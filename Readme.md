@@ -3,7 +3,7 @@ This API generates prime numbers up till the input number.
 
 Requirements:
 java 1.8 
-maven 3.2.x
+maven 3.2.x  rrr
 
 Steps to build the application:
 
