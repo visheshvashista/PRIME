@@ -1,62 +1,76 @@
 package com.number.prime.unittests;
 
-import org.junit.jupiter.api.Assertions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.number.prime.controller.PrimeNumberController;
+import com.number.prime.exception.CustomResponseEntityExceptionHandler;
 import com.number.prime.exception.NoPrimeNumberException;
 import com.number.prime.service.PrimeNumberService;
 import com.number.prime.vo.PrimeNumber;
 
+@ExtendWith(MockitoExtension.class)
+public class PrimeNumberControllerUnitTest{
 
-public class PrimeNumberGeneratorUnitTest {
-	@Autowired
+    @Mock
     PrimeNumberService primeNumberGenerator;
-	PrimeNumber expectedResult;
-	
-    @BeforeEach                                         
-    public void setUp() throws Exception {
-    	primeNumberGenerator = new PrimeNumberService();
+
+    @InjectMocks
+    PrimeNumberController primeNumberController;
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(primeNumberController).
+                setControllerAdvice(new CustomResponseEntityExceptionHandler()).build();
     }
-	
-	@Test
-	public void getPrimeNumbersUnderZero() throws Exception {
-		Assertions.assertThrows(NoPrimeNumberException.class, () -> {
-			primeNumberGenerator.generatePrimeNumbers(0L);});
-		 }
 
     @Test
-	public void getPrimeNumbersUnderOne() throws Exception {
-		Assertions.assertThrows(NoPrimeNumberException.class, () -> {
-			primeNumberGenerator.generatePrimeNumbers(1L);});
-	}
+    public void testFailsWhenPathVariableNotValid() throws Exception {
+        mockMvc.perform(get("/primemumberservice/" +"abc"))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
 
-	@Test
-	public void getPrimeNumbersNegative() throws Exception {
-		Assertions.assertThrows(NoPrimeNumberException.class, () -> {
-			primeNumberGenerator.generatePrimeNumbers(-1001L);});
-	}
+    @Test
+    public void testFailsWhenPathVariableAbsent() throws Exception {
+        mockMvc.perform(get("/primemumberservice/" +""))
+                .andExpect(status().isNotFound()).andReturn();
+    }
 
-	@Test
-	public void getPrimeNumbersUnderEleven() throws Exception {
-		expectedResult = new PrimeNumber("2,3,5,7,11");
-		PrimeNumber primeNumberList = primeNumberGenerator.generatePrimeNumbers(11L);
-		Assertions.assertEquals(expectedResult,primeNumberList);
-	}
+    @Test
+    public void testWhenPathVariableValid() throws Exception {
 
-	@Test
-	public void getPrimeNumbersUnderHundred() throws Exception {
-		expectedResult = new PrimeNumber("2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97");
-		PrimeNumber primeNumberList = primeNumberGenerator.generatePrimeNumbers(100L);
-		Assertions.assertEquals(expectedResult,primeNumberList);
-	}
+        PrimeNumber inputNumber = new PrimeNumber("11") ;
+        PrimeNumber expectedResult = new PrimeNumber("2,3,5,7,11");
+        Mockito.when(primeNumberGenerator.generatePrimeNumbers(Mockito.anyLong())).thenReturn(expectedResult);
+        MvcResult result =  mockMvc.perform(get("/primemumberservice/" + inputNumber))
+                .andExpect(status().isOk())
+                .andReturn();
+        String actualOutput = result.getResponse().getContentAsString();
+        Assert.assertEquals(expectedResult,actualOutput);
 
-	@Test
-	public void getPrimeNumbersUnderTwoHundred() throws Exception {
-		expectedResult = new PrimeNumber("2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59");
-		PrimeNumber primeNumberList = primeNumberGenerator.generatePrimeNumbers(200L);
-		Assertions.assertNotEquals(expectedResult,primeNumberList);
-	}
+    }
 
-}
+    @Test
+    public void testWhenPrimeNumberNotPresentForInput() throws Exception {
+        String inputNumber = "1" ;
+        Mockito.when(primeNumberGenerator.generatePrimeNumbers(Mockito.anyLong())).thenThrow(new NoPrimeNumberException("No prime number exists less than 1"));
+        mockMvc.perform(get("/primemumberservice/" + inputNumber))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+} 
