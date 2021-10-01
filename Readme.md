@@ -20,7 +20,7 @@ Steps to run the application:
 
 Steps to run the tests :
 
-1. Open terminal and go to the extracted folder and run following command.
+1. Open terminal and go to the extracted folder and run following  command.
   
     mvn test
 
