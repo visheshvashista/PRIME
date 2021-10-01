@@ -14,12 +14,12 @@ public class PrimeNumberGeneratorUnitTest {
 	@Autowired
     PrimeNumberService primeNumberGenerator;
 	PrimeNumber expectedResult;
-
+	
     @BeforeEach                                         
     public void setUp() throws Exception {
     	primeNumberGenerator = new PrimeNumberService();
     }
-
+	
 	@Test
 	public void getPrimeNumbersUnderZero() throws Exception {
 		Assertions.assertThrows(NoPrimeNumberException.class, () -> {
@@ -59,4 +59,4 @@ public class PrimeNumberGeneratorUnitTest {
 		Assertions.assertNotEquals(expectedResult,primeNumberList);
 	}
 
-} 
+}
