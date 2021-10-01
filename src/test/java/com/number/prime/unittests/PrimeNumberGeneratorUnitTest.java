@@ -32,31 +32,4 @@ public class PrimeNumberGeneratorUnitTest {
 			primeNumberGenerator.generatePrimeNumbers(1L);});
 	}
 
-	@Test
-	public void getPrimeNumbersNegative() throws Exception {
-		Assertions.assertThrows(NoPrimeNumberException.class, () -> {
-			primeNumberGenerator.generatePrimeNumbers(-1001L);});
-	}
-
-	@Test
-	public void getPrimeNumbersUnderEleven() throws Exception {
-		expectedResult = new PrimeNumber("2,3,5,7,11");
-		PrimeNumber primeNumberList = primeNumberGenerator.generatePrimeNumbers(11L);
-		Assertions.assertEquals(expectedResult,primeNumberList);
-	}
-
-	@Test
-	public void getPrimeNumbersUnderHundred() throws Exception {
-		expectedResult = new PrimeNumber("2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97");
-		PrimeNumber primeNumberList = primeNumberGenerator.generatePrimeNumbers(100L);
-		Assertions.assertEquals(expectedResult,primeNumberList);
-	}
-
-	@Test
-	public void getPrimeNumbersUnderTwoHundred() throws Exception {
-		expectedResult = new PrimeNumber("2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59");
-		PrimeNumber primeNumberList = primeNumberGenerator.generatePrimeNumbers(200L);
-		Assertions.assertNotEquals(expectedResult,primeNumberList);
-	}
-
 }
