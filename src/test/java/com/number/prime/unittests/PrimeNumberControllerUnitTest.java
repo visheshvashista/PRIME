@@ -14,7 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 import com.number.prime.controller.PrimeNumberController;
 import com.number.prime.exception.CustomResponseEntityExceptionHandler;
 import com.number.prime.exception.NoPrimeNumberException;
@@ -53,14 +54,16 @@ public class PrimeNumberControllerUnitTest{
     @Test
     public void testWhenPathVariableValid() throws Exception {
 
-        PrimeNumber inputNumber = new PrimeNumber("11") ;
+        Long inputNumber = 11L;
         PrimeNumber expectedResult = new PrimeNumber("2,3,5,7,11");
         Mockito.when(primeNumberGenerator.generatePrimeNumbers(Mockito.anyLong())).thenReturn(expectedResult);
         MvcResult result =  mockMvc.perform(get("/primemumberservice/" + inputNumber))
                 .andExpect(status().isOk())
                 .andReturn();
         String actualOutput = result.getResponse().getContentAsString();
-        Assert.assertEquals(expectedResult,actualOutput);
+        JSONObject primeNumberJSONObject = new JSONObject(actualOutput);
+        actualOutput = primeNumberJSONObject.getString("primeNumber");
+        Assert.assertEquals(expectedResult.getPrimeNumber().toString(),actualOutput.toString());
 
     }
 
@@ -73,4 +76,4 @@ public class PrimeNumberControllerUnitTest{
                 .andReturn();
     }
 
-} 
+}
