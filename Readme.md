@@ -1,7 +1,7 @@
 ### Reference Documentation
 This API generates prime numbers up till the input number.
 
-Requirements:
+Requirements:  
 java 1.8 
 maven 3.2.x
 
