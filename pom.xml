@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>com.vishesh.prime</groupId>
 	<artifactId>primenumbers</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>primenumbers</name>
 	<description>Rest API to return list of prime numbers less than equal to a given number</description>
