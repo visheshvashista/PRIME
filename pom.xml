@@ -60,7 +60,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				 <configuration>
 				<buildArgs>
-			    		<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+			    		<WAR_FILE>target/${project.build.finalName}.war</WAR_FILE>
 				</buildArgs>
 			         </configuration>
 			</plugin>
