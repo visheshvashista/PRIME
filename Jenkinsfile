@@ -25,7 +25,7 @@ pipeline {
         stage ('Sonar Analysis Stage') {
             steps {
                 withMaven(maven : 'maven3'){
-                withCredentials([string(credentialsId: 'soanrlocal', variable: 'SECRET')]){
+                withCredentials([string(credentialsId: 'soanrlocal1', variable: 'SECRET')]){
                     bat 'mvn sonar:sonar -Dsonar.login="${SECRET}"'
                 }
                 }
