@@ -15,6 +15,20 @@ pipeline {
                 }
             }
         }
+        stage ('Code Coverage Stage') {
+            steps {
+                withMaven(maven : 'maven3') {
+                    bat 'mvn jacoco:report'
+                }
+            }
+        }
+        stage ('Sonar Analysis Stage') {
+            steps {
+                withMaven(maven : 'maven3') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
         stage ('Deployment Stage') {
             steps {
                 withMaven(maven : 'maven3') {
