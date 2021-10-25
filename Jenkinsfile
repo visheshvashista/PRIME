@@ -26,7 +26,7 @@ pipeline {
             steps {
                 withMaven(maven : 'maven3'){
                 withCredentials([string(credentialsId: 'soanrlocal', variable: 'SECRET')]){
-                    bat 'mvn sonar:sonar -Dsonar.login='${SECRET}''
+                    bat 'mvn sonar:sonar -Dsonar.login="${SECRET}"'
                 }
                 }
             }
