@@ -1,34 +1,20 @@
 pipeline {
     agent any
+
     stages {
-        stage ('Compile Stage') {
+        stage('Build') {
             steps {
-                withMaven(maven : 'maven3') {
-                    bat 'mvn clean compile'
-                }
+                echo 'Building..'
             }
         }
-        stage ('Testing Stage') {
+        stage('Test') {
             steps {
-                withMaven(maven : 'maven3') {
-                    bat 'mvn test'
-                }
+                echo 'Testing..'
             }
         }
-        stage ('Code Coverage Stage') {
+        stage('Deploy') {
             steps {
-                withMaven(maven : 'maven3') {
-                    bat 'mvn jacoco:report'
-                }
-            }
-        }
-        stage ('Sonar Analysis Stage') {
-            steps {
-                withMaven(maven : 'maven3'){
-                withCredentials([string(credentialsId: 'sonartoken25', variable: 'SECRET')]){
-                    bat 'mvn sonar:sonar -Dsonar.login="${SECRET}"'
-                }
-                }
+                echo 'Deploying....'
             }
         }
     }
